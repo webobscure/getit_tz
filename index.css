@@ -1,0 +1,11 @@
+.container {
+    display: grid;
+}
+
+body {
+    background: linear-gradient(#d81616, #23be12);
+}
+
+.psw {
+    text-align: center;
+}
