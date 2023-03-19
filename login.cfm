@@ -19,7 +19,7 @@
         <div class="container">
             <label for="username"><b>Username</b></label>
             <input type="text" placeholder="Enter a username" name="username" required >
-
+            <br/>
             <label for="password"><b>Password</b></label>
             <input type="password" placeholder="Enter a password" name="password" required>
             <br/>

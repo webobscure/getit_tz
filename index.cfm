@@ -8,16 +8,21 @@
 <body>
     <cfset strHelloWorld = 'Hello World!'>
 <cfoutput>#strHelloWorld#</cfoutput>
-<br/>
-   <cfset varCheck1 = 5>
-   <cfset varCheck2 = 'password'>
 
-   <cfif varCheck1 GT 5>
-    Yes it's bigger than 1 (<cfoutput>#varCheck1#</cfoutput>)
-   <cfelse>
-    NO
+<cfquery datasource="CRM" name="qryUser">
+    SELECT * FROM "user";
+</cfquery>
+   <cfoutput query="qryUser">
+    COLUMNS : #qryUser.columnList# <br/>
+    RECORD COUNT: #qryUser.recordCount# <br/>
+    CURRENT ROW: #qryUser.currentRow# <br/>
+   </cfoutput>
+
+<h2>Users</h2>
+<cfoutput query="qryUser">
+    #qryUser.last_name# <br/>
+</cfoutput>
     <a href='login.cfm'>Go to login page</a>
-   </cfif>
 </body>
 </html>
 
