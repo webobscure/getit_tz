@@ -1,7 +1,7 @@
 <cfcomponent output="false">
     <cffunction name="validateUser" access="public" output="false" returntype="array">
-        <cfargument name="username" type="string" required="true">
-        <cfargument name="password" type="string" required="true">
+        <cfargument name="username" type="string" required="true" />
+        <cfargument name="password" type="string" required="true" />
 
         <cfset aErrorMessages = ArrayNew(1)>
         <cfif NOT isValid('username', arguments.username)>
@@ -17,18 +17,18 @@
         <cfargument name="username" type="string" required="true">
         <cfargument name="password" type="string" required="true">
 
-        <cfset isUserLogin = false>
+        <cfset var isUserLogin = false>
 
-        <cfquery name="LoginUser">
+        <cfquery name="rsLoginUser" datasource="CRM">
             SELECT * FROM "user" WHERE username = '#arguments.username#' AND password = '#arguments.password#';
         </cfquery>
 
-        <cfif LoginUser.recordCount EQ 1>
+        <cfif rsLoginUser.recordCount EQ 1>
             <cflogin>
-                <cfloginuser name="#LoginUser.username#" password="#LoginUser.password#">
+                <rsLoginUser name="#qryUser.username#" password="#qryUser.password#">
             </cflogin>
 
-            <cfset session.stLoggedInUser = {'first_name' = LoginUser.first_name, 'last_name' = LoginUser.last_name, 'id' = LoginUser.id}>
+            <cfset session.stLoggedInUser = {'first_name' = qryUser.first_name, 'last_name' = qryUser.last_name, 'id' = qryUser.id}>
             <cfset isUserLogin = true>
         </cfif>
     </cffunction>

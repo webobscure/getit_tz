@@ -7,12 +7,17 @@
         <title>Login page</title>
     </head>
     <body>
+
+        <cfif structKeyExists(URL, 'logout')>
+            <cfset createObject('component', 'ColdFusion2021.cfusion.wwwroot.components.authenticationService')>
+        </cfif>
+        
         <cfif structKeyExists(form, 'submitLogin')>
             <!---Create of instance of the auth service component--->
-            <cfset authenticationService = createObject("component", 'authenticationService')>
+            <cfset authenticationService = createObject('component', 'authenticationsService')>
             <!---server side data validation--->
-            <cfset aErrorMessage = authenticationService.validateUser(form.username, form.password)>
-            <cfif arrayIsEmpty(aErrorMessage)>
+            <cfset aErrorMessages = authenticationService.validateUser(form.username, form.password)>
+            <cfif arrayIsEmpty(aErrorMessages)>
                 <!---Proceed--->
                 <cfset isUserLoggedIn = authenticationService.doLogin(form.username, form.password)>
 
@@ -21,6 +26,24 @@
 
         <cfform id='formConnection' preservedata="true">
             <fieldset>
+                <cfif structKeyExists(variables, 'aErrorMessages') AND NOT arrayIsEmpty(aErrorMessages)>
+                    <cfoutput>
+                        <cfloop array="#aErrorMessages#" item="message">
+                            <p class="error_message">#message#</p>
+                        </cfloop>
+                    </cfoutput>
+                </cfif>
+
+                <cfif structKeyExists(variables, 'isUserLoggedIn') AND isUserLoggedIn EQ false>
+                    <p class="error_message">User not found. Please try again</p>
+                </cfif>
+
+
+                <cfif structKeyExists(session, 'stLoggedInUser')>
+                    <!---Display a welcome page--->
+                    <p><cfoutput>Welcome #session.stLoggedInUser.first_name# #session.stLoggedInUser.last_name#!</cfoutput></p>
+                    <p><a href="index.cfm">Main page</a> <a href="index.cfm?logout">Logout</a></p>
+                <cfelse >
                 <div class="contianer">
                     <label for="username"><b>Username</b></label>
                 <cfinput type="text"  name="username" id="username" validateat="onSubmit" required >
@@ -29,6 +52,7 @@
                 <cfinput type="password"  name="password"  id="password" validateat="onSubmit" required>
                 <br/>
                 <cfinput type="submit" name="submitlogin" id="submitlogin" value="Login"> 
+                </cfif>
                 </div>
             </fieldset>
         </cfform>
