@@ -7,24 +7,34 @@
         <title>Login page</title>
     </head>
     <body>
-        <cfif isDefined('url.error')>
-            <font color='#FF0000'>
-                <cfoutput>
-                    #url.error#
-                </cfoutput>
-        </font>
+        <cfif structKeyExists(form, 'submitLogin')>
+            <!---Create of instance of the auth service component--->
+            <cfset authenticationService = createObject("component", 'authenticationService')>
+            <!---server side data validation--->
+            <cfset aErrorMessage = authenticationService.validateUser(form.username, form.password)>
+            <cfif arrayIsEmpty(aErrorMessage)>
+                <!---Proceed--->
+                <cfset isUserLoggedIn = authenticationService.doLogin(form.username, form.password)>
+
+            </cfif>
         </cfif>
 
-       <form action='auth.cfm' method="POST">
-        <div class="container">
-            <label for="username"><b>Username</b></label>
-            <input type="text" placeholder="Enter a username" name="username" required >
-            <br/>
-            <label for="password"><b>Password</b></label>
-            <input type="password" placeholder="Enter a password" name="password" required>
-            <br/>
-            <button type="submit">Login</button>
-        </div>
+        <cfform id='formConnection' preservedata="true">
+            <fieldset>
+                <div class="contianer">
+                    <label for="username"><b>Username</b></label>
+                <cfinput type="text"  name="username" id="username" validateat="onSubmit" required >
+                <br/>
+                <label for="password"><b>Password</b></label>
+                <cfinput type="password"  name="password"  id="password" validateat="onSubmit" required>
+                <br/>
+                <cfinput type="submit" name="submitlogin" id="submitlogin" value="Login"> 
+                </div>
+            </fieldset>
+        </cfform>
+
+
+      
 
         <div class="container">
             <button type="button" class="cancelbutton">Cancel</button>
