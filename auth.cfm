@@ -5,7 +5,7 @@
     <!--- username is correct --->
     <cfif form.password IS password>
         <!--- password is also correct, send user to loggedin page --->
-        <cflocation  url="loggedin.cfm">
+        <cflocation  url="index.cfm">
     <cfelse>
         <cfset error = "The password is wrong">
         <cflocation  url="login.cfm/error=#error#">

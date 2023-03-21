@@ -19,7 +19,7 @@
             <cfset aErrorMessages = authenticationService.validateUser(form.username, form.password)>
             <cfif arrayIsEmpty(aErrorMessages)>
                 <!---Proceed--->
-                <cfset isUserLoggedIn = authenticationService.doLogin(form.username, form.password)>
+                <cfset isUserLoggedIn = authenticationService.doLogin(form.username, form.password) />
 
             </cfif>
         </cfif>

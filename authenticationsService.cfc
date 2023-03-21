@@ -4,7 +4,7 @@
         <cfargument name="password" type="string" required="true" />
 
         <cfset aErrorMessages = ArrayNew(1)>
-        <cfif NOT isValid('username', arguments.username)>
+        <cfif NOT isValid('string', arguments.username)>
             <cfset arrayAppend(aErrorMessages, 'Please provide a valid username') >
         </cfif>
         <cfif arguments.password EQ ''>
@@ -29,8 +29,9 @@
             </cflogin>
 
             <cfset session.stLoggedInUser = {'first_name' = qryUser.first_name, 'last_name' = qryUser.last_name, 'id' = qryUser.id}>
-            <cfset isUserLogin = true>
+            <cfset var isUserLogin = true >
         </cfif>
+        <cfreturn isUserLoggedIn />
     </cffunction>
 
     <cffunction name="doLogout" access="public" output="false" returntype="void">
